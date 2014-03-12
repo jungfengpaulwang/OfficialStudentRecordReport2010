@@ -1,0 +1,11 @@
+E:\ischool source\ischool@debug\OfficialStudentRecordReport2010\OfficialStudentRecordReport2010.dll.config
+E:\ischool source\ischool@debug\OfficialStudentRecordReport2010\OfficialStudentRecordReport2010.dll
+E:\ischool source\ischool@debug\OfficialStudentRecordReport2010\OfficialStudentRecordReport2010.pdb
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.csprojResolveAssemblyReference.cache
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.FrontForm.resources
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.Properties.Resources.resources
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.TagConfig.resources
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.TemplateConfigForm.resources
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.csproj.GenerateResource.Cache
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.dll
+E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.pdb
