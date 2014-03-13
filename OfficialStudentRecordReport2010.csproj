@@ -40,7 +40,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\ischool source\ischool%40debug\OfficialStudentRecordReport2010\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -61,35 +61,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\ischool_EMBA\FiscaRuntime\modules\LIB_ASPOSE\Aspose.Cells.dll</HintPath>
+      <HintPath>Library\Aspose.Cells.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\ischool source\ischool degug\components\DevComponents.DotNetBar2.dll</HintPath>
+      <HintPath>Library\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FISCA">
-      <HintPath>..\..\..\FiscaRuntime\kernel\FISCA.dll</HintPath>
+      <HintPath>Library\FISCA.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FISCA.Permission">
-      <HintPath>..\..\..\FiscaRuntime\kernel\FISCA.Permission.dll</HintPath>
+      <HintPath>Library\FISCA.Permission.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FISCA.Presentation">
-      <HintPath>..\..\..\FiscaRuntime\kernel\FISCA.Presentation.dll</HintPath>
+      <HintPath>Library\FISCA.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="K12.Data">
-      <HintPath>..\..\..\..\..\ischool source\ischool@debug\modules\SHSchoolLoader\K12.Data.dll</HintPath>
+      <HintPath>Library\K12.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="K12.Presentation">
-      <HintPath>..\..\..\..\..\ischool source\ischool@debug\modules\SHSchoolLoader\K12.Presentation.dll</HintPath>
+      <HintPath>Library\K12.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SHSchool.Data">
-      <HintPath>..\..\..\..\..\ischool source\ischool@debug\modules\SHSchoolLoader\SHSchool.Data.dll</HintPath>
+      <HintPath>Library\SHSchool.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -184,8 +185,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Research\A-Team\ReportHelper\ReportHelper.csproj">
-      <Project>{940285B7-47F3-49E8-A914-1CF8B73F133C}</Project>
+    <ProjectReference Include="..\NTU_EMBA\ReportHelper\ReportHelper.csproj">
+      <Project>{940285b7-47f3-49e8-a914-1cf8b73f133c}</Project>
       <Name>ReportHelper</Name>
     </ProjectReference>
   </ItemGroup>

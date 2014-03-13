@@ -1,22 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficialStudentRecordReport2010", "OfficialStudentRecordReport2010.csproj", "{F3D5DC45-9023-4F3E-8F9E-30F152E20AA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportHelper", "..\..\..\..\Research\A-Team\ReportHelper\ReportHelper.csproj", "{940285B7-47F3-49E8-A914-1CF8B73F133C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportHelper", "..\NTU_EMBA\ReportHelper\ReportHelper.csproj", "{940285B7-47F3-49E8-A914-1CF8B73F133C}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfserver:8080/tfs/tfs2008
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = OfficialStudentRecordReport2010.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\..\\..\\Research\\A-Team\\ReportHelper\\ReportHelper.csproj
-		SccProjectName2 = ../../../../Research/A-Team/ReportHelper
-		SccLocalPath2 = ..\\..\\..\\..\\Research\\A-Team\\ReportHelper
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

@@ -869,20 +869,49 @@ namespace OfficialStudentRecordReport2010
                     _PersonalSemesterSubjectScoreHistoryInfo[index].ForEach(x => kvs.Add(x));
                 decimal proAccumulatedCredit = 0;
                 decimal proAccquiredCredit = 0;
+                decimal specializationAccumulatedCredit = 0;
+                decimal specializationAcquiredCredit = 0;
+
                 foreach (SHSubjectSemesterScoreInfo sss in _SHSubjectSemesterScoreInfo)
                 {
-                    if (kvs.Where(y => (y.Key == sss.SchoolYear && y.Value == sss.Semester)).Count() > 0 && sss.Entry == "實習科目")
+                    if (kvs.Where(y => (y.Key == sss.SchoolYear && y.Value == sss.Semester)).Count() > 0)
                     {
-                        if (sss.Credit.HasValue && sss.Pass.HasValue && sss.Pass.Value)
-                            if (sss.Credit.HasValue)
-                                proAccquiredCredit += sss.Credit.Value;
+                        if (sss.Entry == "實習科目")
+                        {
+                            if (sss.Credit.HasValue && sss.Pass.HasValue && sss.Pass.Value)
+                                if (sss.Credit.HasValue)
+                                    proAccquiredCredit += sss.Credit.Value;
 
-                        if (sss.Credit.HasValue)
-                            proAccumulatedCredit += sss.Credit.Value;
+                            if (sss.Credit.HasValue)
+                                proAccumulatedCredit += sss.Credit.Value;
+                        }
+                        if (sss.Entry == "專業科目")
+                        {
+                            if (sss.Credit.HasValue && sss.Pass.HasValue && sss.Pass.Value)
+                                if (sss.Credit.HasValue)
+                                    specializationAcquiredCredit += sss.Credit.Value;
+
+                            if (sss.Credit.HasValue)
+                                specializationAccumulatedCredit += sss.Credit.Value;
+                        }
                     }
                 }
                 schoolRollTable.Tables.Add(proAccquiredCredit.ToDataTable("GraduationPracticeAcquiredCredit", "實習科目及格學分"));
                 schoolRollTable.Tables.Add(proAccumulatedCredit.ToDataTable("GraduationPracticeAccumulatedCredit", "實習科目累計學分"));
+
+                //  若科目分項成績有設定「專業科目」則採計此公式
+                if (specializationAccumulatedCredit > 0)
+                {
+                    if (schoolRollTable.Tables.Contains("GraduationSpecializationAcquiredCredit"))
+                        schoolRollTable.Tables.Remove("GraduationSpecializationAcquiredCredit");
+                    if (schoolRollTable.Tables.Contains("GraduationSpecializationAccumulatedCredit"))
+                        schoolRollTable.Tables.Remove("GraduationSpecializationAccumulatedCredit");
+                    //  專業科目及格學分
+                    schoolRollTable.Tables.Add(specializationAcquiredCredit.ToDataTable("GraduationSpecializationAcquiredCredit", "專業科目及格學分"));
+                    //  專業科目累計學分
+                    schoolRollTable.Tables.Add(specializationAccumulatedCredit.ToDataTable("GraduationSpecializationAccumulatedCredit", "專業科目累計學分"));
+                    
+                }
             }
             #endregion
 
@@ -915,8 +944,19 @@ namespace OfficialStudentRecordReport2010
                 //  異動代碼首碼為「0」者：新生異動
                 //  異動代碼前3碼為「101」且為進校學籍表：它校轉入
                 //  異動代碼前3碼為「111」且為日校、高職學籍表：它校轉入
+                //var enrollUpdateRecords = from updateRecords in shurrs
+                //                          where (updateRecords.UpdateCode.Substring(0, 1) == "0" || ((templateNumber == 5 || templateNumber == 6) && updateRecords.UpdateCode.Substring(0, 3) == "101") || ((templateNumber != 5 && templateNumber != 6) && updateRecords.UpdateCode.Substring(0, 3) == "111"))
+                //                          orderby updateRecords.UpdateDate descending
+                //                          select updateRecords;
+
+                //  入學異動(新生與他校轉入依據異動日期遞減排序，取第一筆)
+                //  異動代碼首碼為「0」者：新生異動
+                //  異動代碼首碼為「1」者：他校轉入
+                //  異動代碼首碼為「2」者：本校學籍增加
+                //  異動代碼首碼為「3」者：本校學籍減少
+                //  異動代碼首碼為「4」者：學籍更正
                 var enrollUpdateRecords = from updateRecords in shurrs
-                                          where (updateRecords.UpdateCode.Substring(0, 1) == "0" || ((templateNumber == 5 || templateNumber == 6) && updateRecords.UpdateCode.Substring(0, 3) == "101") || ((templateNumber != 5 && templateNumber != 6) && updateRecords.UpdateCode.Substring(0, 3) == "111"))
+                                          where (updateRecords.UpdateCode.Substring(0, 1) == "0" || updateRecords.UpdateCode.Substring(0, 1) == "1")
                                           orderby updateRecords.UpdateDate descending
                                           select updateRecords;
 
@@ -926,7 +966,7 @@ namespace OfficialStudentRecordReport2010
                 {
                     DataRow pRow = EnrollRecordTable.NewRow();
 
-                    string graduateSchool = (u.UpdateCode.Substring(0, 1) == "0" ? (u.GraduateSchoolLocationCode + " " + u.GraduateSchool) : u.PreviousSchool);
+                    string graduateSchool = ((u.UpdateCode.Substring(0, 1) == "0" || u.UpdateCode.Substring(0, 1) == "1") ? (u.GraduateSchoolLocationCode + " " + u.GraduateSchool) : u.PreviousSchool);
                     pRow["EnrollUpdateRecord"] = graduateSchool;
                     EnrollRecordTable.Rows.Add(pRow);
 
@@ -964,7 +1004,7 @@ namespace OfficialStudentRecordReport2010
                 schoolRollTable.Tables.Add(GraduateRecordTable);
                 //  學籍異動
                 var otherUpdateRecords = from updateRecords in shurrs
-                                         where (updateRecords.UpdateCode.Substring(0, 1) != "0" && updateRecords.UpdateCode.Substring(0, 1) != "5")
+                                         where (updateRecords.UpdateCode.Substring(0, 1) != "0" && updateRecords.UpdateCode.Substring(0, 1) != "1" && updateRecords.UpdateCode.Substring(0, 1) != "5")
                                          orderby updateRecords.UpdateDate
                                          select updateRecords;
 
@@ -974,11 +1014,11 @@ namespace OfficialStudentRecordReport2010
                 OtherUpdateRecordTable.Columns.Add("其它異動文號");
                 foreach (SHUpdateRecordRecord u in otherUpdateRecords)
                 {
-                    if ((templateNumber == 5 || templateNumber == 6) && u.UpdateCode.Substring(0, 3) == "101")
-                        continue;
+                    //if ((templateNumber == 5 || templateNumber == 6) && u.UpdateCode.Substring(0, 3) == "101")
+                    //    continue;
 
-                    if ((templateNumber != 5 && templateNumber != 6) && u.UpdateCode.Substring(0, 3) == "111")
-                        continue;
+                    //if ((templateNumber != 5 && templateNumber != 6) && u.UpdateCode.Substring(0, 3) == "111")
+                    //    continue;
 
                     DataRow pRow = OtherUpdateRecordTable.NewRow();
 

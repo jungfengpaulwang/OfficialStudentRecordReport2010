@@ -162,6 +162,7 @@ namespace OfficialStudentRecordReport2010
                     _BGWStudentRecord.DoWork += new DoWorkEventHandler(_BGWStudentRecord_DoWork);
                     _BGWStudentRecord.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BGWStudentRecord_RunWorkerCompleted);
                     _BGWStudentRecord.ProgressChanged += new ProgressChangedEventHandler(_BGWStudentRecord_ProgressChanged);
+                    MotherForm.SetStatusBarMessage("學籍表(97學年度入學適用)產生中...");
                     _BGWStudentRecord.RunWorkerAsync();
                     
                     //

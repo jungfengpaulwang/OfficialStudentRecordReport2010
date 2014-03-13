@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReportHelper</name>
+    </assembly>
+    <members>
+        <member name="M:ReportHelper.ReportFactory.CreateExcelDocument``1(System.String)">
+            <summary>
+            工廠依據訂單生產報表
+            </summary>
+            <param name="order">訂單</param>
+            <returns>實作 Document 之物件</returns>
+        </member>
+        <!-- 忽略成員 "M:ReportHelper.Report.Produce(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Data.DataSet}},System.IO.MemoryStream,System.Boolean)" 中格式錯誤的 XML 註解 -->
+        <member name="M:ReportHelper.DocumentHelper.CloneTemplate(Aspose.Cells.Worksheet,Aspose.Cells.Worksheet,System.Int32)">
+            <summary>
+            Aspose 版複製樣版
+            </summary>
+            <param name="instanceSheet">報表</param>
+            <param name="templateSheet">樣版</param>
+            <param name="dataIndex">報表目前資料位置</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.GetPictureData(Aspose.Cells.Picture)">
+            <summary>
+            取得 Aspose.Cells.Picture 的 Image Data
+            </summary>
+            <param name="picture">Aspose.Cells.Picture</param>
+            <returns>Aspose.Cells.Picture 的 Image Data(格式為 byte[])</returns>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.RemoveTemplateSheet(Aspose.Cells.Workbook)">
+            <summary>
+            移除樣版檔的所有樣版工作表
+            </summary>
+            <param name="wb">樣版檔</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.Save(Aspose.Cells.Workbook,System.String,System.Boolean,ReportHelper.DocumentType)">
+            <summary>
+            目前僅能儲存 NPOI.HSSFWorkbook 報表，未來將支援 PDF 格式。
+            </summary>
+            <param name="document">要儲存的報表物件。</param>
+            <param name="fileFullName">儲存的檔案名稱，請記得加入副檔名(.xls)。</param>
+            <param name="openAfterSave">產生完報表是否由程式開啟。批次產生報表時，務必傳入 false。</param>
+            <param name="type">目前僅支援 DocumentType.HSSFWorkbook，未來將支援 DocumentType.PDF。</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.DiscoverVariableCells(Aspose.Cells.Worksheet,System.Int32)">
+            <summary>
+            探索工作表包含變數的儲存格。
+            </summary>
+            <param name="sheet">包含變數的工作表，通常為「樣版」。</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.GenerateSheet(System.Data.DataSet,Aspose.Cells.Worksheet,System.Int32)">
+            <summary>
+            以實值取代變數
+            </summary>
+            <param name="dataSet">資料來源</param>
+            <param name="instanceSheet">報表</param>
+            <param name="dataIndex">報表列</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.Open(System.String)">
+            <summary>
+            開啟檔案
+            </summary>
+            <param name="fileFullName">檔案名稱=路徑+檔名(含副檔名)。</param>
+        </member>
+        <member name="M:ReportHelper.DocumentHelper.Open(System.String,System.String)">
+            <summary>
+            開啟檔案
+            </summary>
+            <param name="path"></param>
+            <param name="filename">檔案名稱=檔名(含副檔名)，程式會將路徑與檔名結合。</param>
+        </member>
+    </members>
+</doc>

@@ -9,3 +9,17 @@ E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRec
 E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.csproj.GenerateResource.Cache
 E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.dll
 E:\TFServer2013\ischoolteam\ischool_Senior with FISCA\Modules\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.pdb
+E:\github\OfficialStudentRecordReport2010\bin\Debug\OfficialStudentRecordReport2010.dll.config
+E:\github\OfficialStudentRecordReport2010\bin\Debug\OfficialStudentRecordReport2010.dll
+E:\github\OfficialStudentRecordReport2010\bin\Debug\OfficialStudentRecordReport2010.pdb
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.csprojResolveAssemblyReference.cache
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.FrontForm.resources
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.Properties.Resources.resources
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.TagConfig.resources
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.TemplateConfigForm.resources
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.csproj.GenerateResource.Cache
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.dll
+E:\github\OfficialStudentRecordReport2010\obj\x86\Debug\OfficialStudentRecordReport2010.pdb
+E:\github\OfficialStudentRecordReport2010\bin\Debug\ReportHelper.dll
+E:\github\OfficialStudentRecordReport2010\bin\Debug\ReportHelper.xml
+E:\github\OfficialStudentRecordReport2010\bin\Debug\ReportHelper.pdb
