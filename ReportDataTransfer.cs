@@ -966,7 +966,7 @@ namespace OfficialStudentRecordReport2010
                 {
                     DataRow pRow = EnrollRecordTable.NewRow();
 
-                    string graduateSchool = ((u.UpdateCode.Substring(0, 1) == "0" || u.UpdateCode.Substring(0, 1) == "1") ? (u.GraduateSchoolLocationCode + " " + u.GraduateSchool) : u.PreviousSchool);
+                    string graduateSchool = ((u.UpdateCode.Substring(0, 1) == "0") ? (u.GraduateSchoolLocationCode + " " + u.GraduateSchool) : u.PreviousSchool);   //|| u.UpdateCode.Substring(0, 1) == "1"
                     pRow["EnrollUpdateRecord"] = graduateSchool;
                     EnrollRecordTable.Rows.Add(pRow);
 
