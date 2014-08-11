@@ -522,7 +522,7 @@ namespace OfficialStudentRecordReport2010
                     notPassTotalSubjectAmount += 1;
                 }
 
-                if ((ss.Score.HasValue ? ss.Score.Value : 0) == 0)
+                if (ss.Score.HasValue && ss.Score.Value == 0)
                     hasZeroScoreSubject = true;
             }
 

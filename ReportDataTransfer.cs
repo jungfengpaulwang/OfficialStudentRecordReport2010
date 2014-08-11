@@ -227,10 +227,72 @@ namespace OfficialStudentRecordReport2010
             schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => x.Hour).ToDataTable(prefix + "Hour", "課時"));
             //  學分
             schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => (x.Credit.HasValue ? x.Credit.Value.ToString() : "")).ToDataTable(prefix + "Credit", "學分"));
-            //  原始成績
-            schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => (x.Score.HasValue ? x.Score.Value.ToString() : "")).ToDataTable(prefix + "ScoreWithSign", "原始成績"));
+			////  原始成績
+			//schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => (x.Score.HasValue ? x.Score.Value.ToString() : "")).ToDataTable(prefix + "ScoreWithSign", "原始成績"));
+			// 補考成績
+			schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => x.ReExamScore).ToDataTable(prefix + "ReExamScore", "補考成績"));
+			// 重修成績
+			schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Select(x => x.ReCourseScore).ToDataTable(prefix + "ReCourseScore", "重修成績"));
             //  學年實得學分
             schoolRollTable.Tables.Add(pSHSubjectYearScoreInfo.Sum(x => x.Credit).ToDataTable(prefix + "AcquiredCredit", "學年實得學分"));
+
+			///	以下為新加的 2014/8/11
+			// 成績加符號標示
+			List<string> ScoreWithSign = new List<string>();
+			// 擇優成績
+			List<string> ScoreBetter = new List<string>();
+			// 未取得學分標示
+			List<string> ScoreNoPass = new List<string>();
+			foreach (SHSubjectYearScoreInfo ss in pSHSubjectYearScoreInfo)
+			{
+				decimal? scoreBetter = null;
+				string scoreSign = string.Empty;
+				string scoreWithSign = string.Empty;
+
+				if (ss.Score.HasValue)
+					scoreBetter = ss.Score.Value;
+
+				//  補考成績
+				if (ss.ReExamScore.HasValue)
+				{
+					if (scoreBetter.HasValue)
+					{
+						if (ss.ReExamScore.Value > scoreBetter.Value)
+						{
+							scoreBetter = ss.ReExamScore.Value;
+							scoreSign = resitSign;
+						}
+					}
+					else
+					{
+						scoreBetter = ss.ReExamScore.Value;
+						scoreSign = resitSign;
+					}
+				}
+
+				scoreWithSign = scoreSign + (scoreBetter.HasValue ? scoreBetter.Value.ToString() : "");
+
+				//  不及格標示
+				if ((scoreBetter.HasValue ? scoreBetter.Value : 0) < dataPool.GetPassingStandard(pStudent.ID, ss.GradeYear))
+				{
+					ScoreNoPass.Add(failedSign);
+				}
+				else
+					ScoreNoPass.Add("");
+
+				//  重修成績
+				if (ss.ReCourseScore.HasValue)
+					scoreWithSign += retakeSign + ss.ReCourseScore.Value;
+
+				ScoreWithSign.Add(scoreWithSign);
+				ScoreBetter.Add(scoreBetter.HasValue ? scoreBetter.Value.ToString() : string.Empty);
+			}
+			// 成績加符號標示
+			schoolRollTable.Tables.Add(ScoreWithSign.ToDataTable(prefix + "ScoreWithSign", "成績加符號標示"));
+			// 擇優成績
+			schoolRollTable.Tables.Add(ScoreBetter.ToDataTable(prefix + "ScoreBetter", "擇優成績"));
+			// 未取得學分標示
+			schoolRollTable.Tables.Add(ScoreNoPass.ToDataTable(prefix + "ScoreNoPass", "未取得學分標示"));
         }
 
         /// <summary>

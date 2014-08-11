@@ -73,6 +73,10 @@
       <HintPath>Library\FISCA.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.Data">
+      <HintPath>Library\FISCA.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.Permission">
       <HintPath>Library\FISCA.Permission.dll</HintPath>
       <Private>False</Private>

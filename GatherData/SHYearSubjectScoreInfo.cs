@@ -5,6 +5,8 @@ using System.Text;
 using SHSchool.Data;
 using System.Xml.Linq;
 using K12.Data;
+using FISCA.Data;
+using System.Data;
 
 namespace OfficialStudentRecordReport2010
 {
@@ -29,9 +31,17 @@ namespace OfficialStudentRecordReport2010
         /// </summary>  
         public string SubjectName { set; get; }
         /// <summary>
-        /// 原始成績
+        /// 原始成績=試算成績
         /// </summary>
-        public decimal? Score { set; get; }
+		public decimal? Score { set; get; }
+		/// <summary>
+		/// 補考成績
+		/// </summary>
+		public decimal? ReExamScore { set; get; }
+		/// <summary>
+		/// 重修成績
+		/// </summary>
+		public decimal? ReCourseScore { set; get; }        
         /// <summary>
         /// 學年實得學分=上、下學期獲得學分之加總
         /// </summary>
@@ -62,13 +72,22 @@ namespace OfficialStudentRecordReport2010
         private Dictionary<string, Dictionary<int, int>> _PersonalYearSubjectScoreHistoryInfo;
         //  單一學生重讀學年
         private Dictionary<string, List<int>> _PersonalReReadSchoolYear;
+		//	單一學生科目學年補考成績
+		private Dictionary<string, decimal> _PersonalReExamScore;
+		//	單一學生科目學年重修成績
+		private Dictionary<string, decimal> _PersonalReCourseScore;
+		//	單一學生科目學年結算成績
+		private Dictionary<string, decimal> _PersonalScore;
 
         public void Dispose()
         {
             _PersonalSubjectYearScoreInfo.GetEnumerator().Dispose();
             _PersonalYearSubjectScoreInfo.GetEnumerator().Dispose();
             _PersonalYearSubjectScoreHistoryInfo.GetEnumerator().Dispose();
-            _PersonalReReadSchoolYear.GetEnumerator().Dispose();
+			_PersonalReReadSchoolYear.GetEnumerator().Dispose();
+			_PersonalReExamScore.GetEnumerator().Dispose();
+			_PersonalReCourseScore.GetEnumerator().Dispose();
+			_PersonalScore.GetEnumerator().Dispose();
 
             GC.SuppressFinalize(this);
         }
@@ -84,6 +103,9 @@ namespace OfficialStudentRecordReport2010
             _PersonalYearSubjectScoreInfo = new Dictionary<string, List<SHSubjectYearScoreInfo>>();
             _PersonalYearSubjectScoreHistoryInfo = new Dictionary<string, Dictionary<int, int>>();
             _PersonalReReadSchoolYear = new Dictionary<string, List<int>>();
+			_PersonalReExamScore = new Dictionary<string, decimal>();
+			_PersonalReCourseScore = new Dictionary<string, decimal>();
+			_PersonalScore = new Dictionary<string, decimal>();
 
             ProduceData(pStudents);
         }
@@ -317,6 +339,82 @@ namespace OfficialStudentRecordReport2010
             if (_SHYearScore.Count > 0)
                 _SHYearScore = _SHYearScore.OrderByDescending(x => x.SchoolYear).Select(x => x).ToList();
 
+			//	學生修習科目學年成績資料，因為補考成績與重修成績是新加入的，SHSchoolYearScore 尚未支援，暫以 DBHelper 取得資料解析之。
+			DataTable dataTable = (new QueryHelper()).Select(string.Format("select ref_student_id as student_id, school_year, grade_year, score_info from year_subj_score where ref_student_id in ({0}) ", string.Join(",", pStudentIDs)));
+			foreach(DataRow row in dataTable.Rows)
+			{
+				string student_id = row["student_id"] + "";
+				string school_year = row["school_year"] + "";
+				string grade_year = row["grade_year"] + "";
+				string score_info = row["score_info"] + "";
+
+				if (string.IsNullOrWhiteSpace(score_info))
+					continue;
+
+				decimal? Score = null;
+				decimal? ReExamScore = null;
+				decimal? ReCourseScore = null;
+				decimal dScore;
+				decimal dReExamScore;
+				decimal dReCourseScore;
+
+				try
+				{
+					//	<Subject 學年成績="69" 科目="國文" 結算成績="69" 補考成績="" 重修成績=""/>
+					XDocument Document = XDocument.Parse(score_info);
+
+					foreach (XElement Element in Document.Descendants("Subject"))
+					{
+						string subject = (Element.Attribute("科目") == null ? string.Empty : Element.Attribute("科目").Value + "");
+						string key = student_id + "_" + school_year + "_" + subject + "_" + grade_year;
+
+						if (Element.Attribute("結算成績") != null)
+						{
+							if (decimal.TryParse(Element.Attribute("結算成績").Value + "", out dScore))
+							{
+								Score = dScore;
+								if (!this._PersonalScore.ContainsKey(key))
+									this._PersonalScore.Add(key, Score.Value);
+							}
+							else
+								Score = null;
+						}
+						else
+							Score = null;
+
+						if (Element.Attribute("補考成績") != null)
+						{
+							if (decimal.TryParse(Element.Attribute("補考成績").Value + "", out dReExamScore))
+							{
+								ReExamScore = dReExamScore;
+								if (!this._PersonalReExamScore.ContainsKey(key))
+									this._PersonalReExamScore.Add(key, ReExamScore.Value);
+							}
+							else
+								ReExamScore = null;
+						}
+						else
+							ReExamScore = null;
+
+						if (Element.Attribute("重修成績") != null)
+						{
+							if (decimal.TryParse(Element.Attribute("重修成績").Value + "", out dReCourseScore))
+							{
+								ReCourseScore = dReCourseScore;
+								if (!this._PersonalReCourseScore.ContainsKey(key))
+									this._PersonalReCourseScore.Add(key, ReCourseScore.Value);
+							}
+							else
+								ReCourseScore = null;
+						}
+						else
+							ReCourseScore = null;
+					}
+				}
+				catch { }
+			}
+			
+
             //  收集學生修習科目學年成績資料
             foreach (SHSchoolYearScoreRecord sr in _SHYearScore)
             {
@@ -349,7 +447,18 @@ namespace OfficialStudentRecordReport2010
                     _PersonalSubjectYearScoreInfo[keySingleSubject].SchoolYear = sr.SchoolYear;
                     _PersonalSubjectYearScoreInfo[keySingleSubject].StudentID = sr.RefStudentID;
                     _PersonalSubjectYearScoreInfo[keySingleSubject].SubjectName = ss.Subject;
-                    _PersonalSubjectYearScoreInfo[keySingleSubject].Score = ss.Score;
+					if (this._PersonalScore.ContainsKey(keySingleSubject))
+						_PersonalSubjectYearScoreInfo[keySingleSubject].Score = this._PersonalScore[keySingleSubject];
+					else
+						_PersonalSubjectYearScoreInfo[keySingleSubject].Score = null;
+					if (this._PersonalReExamScore.ContainsKey(keySingleSubject))
+						_PersonalSubjectYearScoreInfo[keySingleSubject].ReExamScore = this._PersonalReExamScore[keySingleSubject];
+					else
+						_PersonalSubjectYearScoreInfo[keySingleSubject].ReExamScore = null;
+					if (this._PersonalReCourseScore.ContainsKey(keySingleSubject))
+						_PersonalSubjectYearScoreInfo[keySingleSubject].ReCourseScore = this._PersonalReCourseScore[keySingleSubject];
+					else
+						_PersonalSubjectYearScoreInfo[keySingleSubject].ReCourseScore = null;
                     _PersonalSubjectYearScoreInfo[keySingleSubject].GradeYear = sr.GradeYear;
 
                     if (!_PersonalYearSubjectScoreInfo.ContainsKey(keyYearSubject))
